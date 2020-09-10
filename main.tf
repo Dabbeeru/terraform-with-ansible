@@ -4,7 +4,7 @@ provider "aws" {
 }
 
 resource "aws_key_pair" "main" {
-    key_name      = "publickey" 
+    key_name      = "Terraform2" 
   public_key      = file(var.public_key_file)
     
 }
