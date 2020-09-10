@@ -1,6 +1,6 @@
 variable "public_key_file" {
   type        = string
-  default     = "/home/ubuntu/Terraform2"
+  default     = "/home/ubuntu/Terraform2.pem"
 }
 
 variable "master_instance_type"{
