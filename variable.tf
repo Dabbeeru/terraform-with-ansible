@@ -1,6 +1,6 @@
 variable "public_key_file" {
   type        = string
-  default     = "/home/ubuntu/pubkey"
+  default     = "/home/ubuntu/Terraform2"
 }
 
 variable "master_instance_type"{
