@@ -9,9 +9,9 @@ resource "aws_key_pair" "main" {
     
 }
 resource "aws_instance" "k8Master"{
-   ami                              = "ami-0bbe28eb2173f6167"
+   ami                              = "ami-0758470213bdd23b1"
    instance_type                    = var.master_instance_type
-   vpc_security_group_ids           =  ["sg-07bb171a2cbb779a3"]
+   vpc_security_group_ids           =  ["sg-0391422bbcb2fe130"]
    key_name                         = aws_key_pair.main.key_name
    associate_public_ip_address      = true
    tags                             = {
@@ -24,9 +24,9 @@ resource "aws_instance" "k8Master"{
 }
 
 resource "aws_instance" "k8Worker"{
-   ami                              = "ami-0bbe28eb2173f6167"
+   ami                              = "ami-0758470213bdd23b1"
    instance_type                    = var.worker_instance_type
-   vpc_security_group_ids           =  ["sg-07bb171a2cbb779a3"]
+   vpc_security_group_ids           =  ["sg-0391422bbcb2fe130"]
    key_name                         = aws_key_pair.main.key_name
    associate_public_ip_address      = true
    tags                             = {
