@@ -12,11 +12,11 @@
   - name: cloning the repo
     git:
       repo: https://github.com/Dabbeeru/terraform-with-ansible.git
-      dest: /home/ubuntu/cicd
+      dest: /home/ubuntu/terraform-with-ansible
   - name: executing the kubectl commands
     shell: |
       cd cicd
-      kubectl apply -f Deployment.yml
-      kubectl apply -f Service.yml
+      kubectl apply -f deployment.yml
+      kubectl apply -f service.yml
       cd ~
       kubectl get svc
