@@ -91,7 +91,7 @@ sh 'sudo docker push dilleswari/tomcat:3.0'
            {
             
            sh script: """
-           terraform init
+           terraform init .
            terraform apply -auto-approve
            
            """       
