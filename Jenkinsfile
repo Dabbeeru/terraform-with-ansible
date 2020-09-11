@@ -15,7 +15,8 @@ pipeline {
         }
 
         stage('Run Sonar Scanner') {
-            steps {
+            steps withSonarQubeEnv('sonar') {
+           
                 sh "mvn verify sonar:sonar"
             }
         }
