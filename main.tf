@@ -1,8 +1,7 @@
 provider "aws" {
 
     region = "us-east-1"
-        secret_key  = "cAuMzv0mVe+egDsH68RDdL3kYPqylaJF5LZ3YjpP"
-    access_key  = "AKIAJ6JCN5JN4CVVQ6LQ"
+      
 }
 
 resource "aws_key_pair" "main" {
