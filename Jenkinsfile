@@ -1,124 +1,38 @@
-#!/usr/bin/env bash
-pipeline { 
-   
-    agent {
-        label 'master'
-    }
+provider "aws" {
 
-    // Build stages:
-    stages {
+    region = "us-east-1"
+}
 
-        stage('Install necessary modules') {
-            steps {
-                sh "mvn clean install"
-            }
-        }
-
-        stage('Run Sonar Scanner') {
-            steps {
-                sh "mvn verify sonar:sonar"
-            }
-        }
-
-      //  stage('Deploy the code to tomcat') {
-        //    steps {
-          //      sh "mvn tomcat7:redeploy"
-            //}
-        //}
-        
-      
+resource "aws_key_pair" "main" {
+    key_name      = "publickey" 
+  public_key      = file(var.public_key_file)
     
-    stage ('building docker image'){
-
- 
-steps
-
- 
-{
-
- 
-echo "building the docker image "
-
- 
-sh 'mvn clean package;sudo docker build -t dilleswari/tomcat:3.0 .'
-
- 
 }
+resource "aws_instance" "k8Master"{
+   ami                              = "ami-06b263d6ceff0b3dd"
+   instance_type                    = var.master_instance_type
+   vpc_security_group_ids           =  ["sg-45a2dd78"]
+   key_name                         = aws_key_pair.main.key_name
+   associate_public_ip_address      = true
+   tags                             = {
+       Name                         = "master"
+   }
+   provisioner "local-exec" {
+           command = "echo [master] '\n' ${aws_instance.k8Master.public_ip}|tee >> inventory"
 
- 
-}
-
- 
-  
-stage('Push the docker image to hub'){
-
- 
-steps
-
- 
-{
-
- 
-echo "login into docker hub "
-
- 
-withCredentials([usernamePassword(credentialsId: 'dockerhub', passwordVariable: 'passwd', usernameVariable: 'username')])
-
- 
-{
-
- 
-sh 'sudo docker login -u ${username} -p ${passwd}'
-
- 
-}
-
- 
-sh 'sudo docker push dilleswari/tomcat:3.0'
-
- 
-}
-
- 
-}
-      stage('Creating an infrastructure using terraform') 
-          {
-		  steps
-		  {
-		  
-           withCredentials([string(credentialsId: 'aws-access-key', variable: 'AWS_ACCESS_KEY_ID'),
-                      string(credentialsId: 'aws-secret-key', variable: 'AWS_SECRET_ACCESS_KEY')])
-           {
-            
-           sh script: """
-           terraform init .
-           terraform apply -auto-approve
-           
-           """       
-         }
         }
-		}
-    stage('Deploying to the k8 environment')
-        {
-		steps {
-           
-             sleep 30
-            sh script:"""
-            
-            ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook -u ubuntu  -i ~/workspace/$JOB_NAME/inventory --private-key=/home/ubuntu/Terraform2.pem installingdocker.yml
-            ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook -u ubuntu  -i ~/workspace/$JOB_NAME/inventory --private-key=/home/ubuntu/Terraform2.pem installingk8.yml -v
-            ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook -u ubuntu  -i ~/workspace/$JOB_NAME/inventory --private-key=/home/ubuntu/Terraform2.pem deploymentk8.yml 
-            """
-           sleep 30
-		   }
-        } 
-       
-     }
-	post {
-        always {
-            cleanWs()
+}
+
+resource "aws_instance" "k8Worker"{
+   ami                              = "ami-06b263d6ceff0b3dd"
+   instance_type                    = var.worker_instance_type
+   vpc_security_group_ids           =  ["sg-45a2dd78"]
+   key_name                         = aws_key_pair.main.key_name
+   associate_public_ip_address      = true
+   tags                             = {
+       Name                         = "worker"
+   }
+   provisioner "local-exec" {
+           command = "echo  [worker] '\n' ${aws_instance.k8Worker.public_ip}|tee >> inventory"
         }
-    }
-
-    }
-
+}
