@@ -1,17 +1,17 @@
 provider "aws" {
 
-    region = "us-east-2"
+    region = "us-east-1"
 }
 
 resource "aws_key_pair" "main" {
-    key_name      = "Terraform2" 
+    key_name      = "publickey" 
   public_key      = file(var.public_key_file)
     
 }
 resource "aws_instance" "k8Master"{
-   ami                              = "ami-0758470213bdd23b1"
+   ami                              = "ami-06b263d6ceff0b3dd"
    instance_type                    = var.master_instance_type
-   vpc_security_group_ids           =  ["sg-0391422bbcb2fe130"]
+   vpc_security_group_ids           =  ["sg-45a2dd78"]
    key_name                         = aws_key_pair.main.key_name
    associate_public_ip_address      = true
    tags                             = {
@@ -24,9 +24,9 @@ resource "aws_instance" "k8Master"{
 }
 
 resource "aws_instance" "k8Worker"{
-   ami                              = "ami-0758470213bdd23b1"
+   ami                              = "ami-06b263d6ceff0b3dd"
    instance_type                    = var.worker_instance_type
-   vpc_security_group_ids           =  ["sg-0391422bbcb2fe130"]
+   vpc_security_group_ids           =  ["sg-45a2dd78"]
    key_name                         = aws_key_pair.main.key_name
    associate_public_ip_address      = true
    tags                             = {
