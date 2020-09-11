@@ -106,7 +106,7 @@ sh 'sudo docker push dilleswari/tomcat:3.0'
              sleep 30
             sh script:"""
             
-            ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook -u ubuntu  -i ~/workspace/$JOB_NAME/inventory --private-key=/home/ubuntu/privkey Installingdocker.yml
+            ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook -u ubuntu  -i ~/workspace/$JOB_NAME/inventory --private-key=/home/ubuntu/privkey installingdocker.yml
             ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook -u ubuntu  -i ~/workspace/$JOB_NAME/inventory --private-key=/home/ubuntu/privkey installingk8.yml -v
             ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook -u ubuntu  -i ~/workspace/$JOB_NAME/inventory --private-key=/home/ubuntu/privkey Deploymentk8.yml 
             """
@@ -122,3 +122,4 @@ sh 'sudo docker push dilleswari/tomcat:3.0'
     }
 
     }
+}
