@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
-pipeline {
-
+pipeline { 
+   
     agent {
         label 'master'
     }
@@ -15,8 +15,7 @@ pipeline {
         }
 
         stage('Run Sonar Scanner') {
-            steps withSonarQubeEnv('sonar') {
-           
+            steps {
                 sh "mvn verify sonar:sonar"
             }
         }
@@ -26,63 +25,63 @@ pipeline {
           //      sh "mvn tomcat7:redeploy"
             //}
         //}
-
-
-
+        
+      
+    
     stage ('building docker image'){
 
-
+ 
 steps
 
-
+ 
 {
 
-
+ 
 echo "building the docker image "
 
-
+ 
 sh 'mvn clean package;sudo docker build -t dilleswari/tomcat:3.0 .'
 
-
+ 
 }
 
-
+ 
 }
 
-
-
+ 
+  
 stage('Push the docker image to hub'){
 
-
+ 
 steps
 
-
+ 
 {
 
-
+ 
 echo "login into docker hub "
 
-
+ 
 withCredentials([usernamePassword(credentialsId: 'dockerhub', passwordVariable: 'passwd', usernameVariable: 'username')])
 
-
+ 
 {
 
-
+ 
 sh 'sudo docker login -u ${username} -p ${passwd}'
 
-
+ 
 }
 
-
+ 
 sh 'sudo docker push dilleswari/tomcat:3.0'
 
-
+ 
 }
 
-
+ 
 }
-     stage('Creating an infrastructure using terraform') 
+       stage('Creating an infrastructure using terraform') 
           {
 		  steps
 		  {
@@ -122,4 +121,4 @@ sh 'sudo docker push dilleswari/tomcat:3.0'
     }
 
     }
-
+}
