@@ -1,4 +1,7 @@
-
+variable "public_key_file" {
+  type        = string
+  default     = "/home/ubuntu/publickey"
+}
 
 variable "master_instance_type"{
   type        = string
