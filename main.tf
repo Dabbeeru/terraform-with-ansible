@@ -3,11 +3,7 @@ provider "aws" {
     region = "us-east-1"
 }
 
-resource "aws_key_pair" "main" {
-    key_name      = "publickey" 
-  public_key      = file(var.public_key_file)
-    
-}
+
 resource "aws_instance" "k8Master"{
    ami                              = "ami-06b263d6ceff0b3dd"
    instance_type                    = var.master_instance_type
