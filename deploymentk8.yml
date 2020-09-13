@@ -15,7 +15,7 @@
       dest: /home/ubuntu/terraform-with-ansible
   - name: executing the kubectl commands
     shell: |
-      cd terraform1
+     cd /home/ubuntu/terraform-with-ansible
       kubectl apply -f Deployment.yml
       kubectl apply -f Service.yml
       cd ~
